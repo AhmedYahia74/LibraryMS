@@ -227,7 +227,7 @@ public class Borrow extends javax.swing.JFrame {
             return;
         }
 
-        ArrayList<Book> lst = DAO.Search(Book_IdTXT.getText());
+        ArrayList<Book> lst = DAO.returnBookWithIdS(Book_IdTXT.getText());
         if (lst.size() == 0) {
             JOptionPane.showMessageDialog(this, "Book with ISBN " + Book_IdTXT.getText() + " not found.", "Error", JOptionPane.ERROR_MESSAGE);
             return;

@@ -5,6 +5,8 @@
 package Transaction;
 
 import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  *
@@ -17,6 +19,13 @@ public class Transaction {
     
     public Transaction(){
         
+    }
+    public Transaction(ResultSet rs) throws SQLException{
+         Customer_Id =rs.getString("Customer_Id");
+        Employee_Id=rs.getString("Employee_Id");
+        Transaction_Id =rs.getInt("Transaction_Id");
+        Book_Id =rs.getInt("Book_Id");
+        date=rs.getDate("date");
     }
 
     public int getTransaction_Id() {

@@ -23,7 +23,6 @@ public class FindBook extends javax.swing.JFrame {
      BookDAO DB;
      BookTableModel tbl;
      String Employee_Id;
-   
 
     public FindBook(String id) {
         Employee_Id=id;
@@ -51,6 +50,7 @@ public class FindBook extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         SearchField = new javax.swing.JTextField();
         BAck = new javax.swing.JButton();
+        History = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -123,6 +123,16 @@ public class FindBook extends javax.swing.JFrame {
             }
         });
 
+        History.setBackground(new java.awt.Color(41, 128, 185));
+        History.setFont(new java.awt.Font("SansSerif", 3, 18)); // NOI18N
+        History.setForeground(new java.awt.Color(255, 255, 255));
+        History.setText("History");
+        History.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                HistoryActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -137,14 +147,19 @@ public class FindBook extends javax.swing.JFrame {
                 .addComponent(SearchButton)
                 .addGap(33, 33, 33))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(45, 45, 45)
+                .addGap(32, 32, 32)
+                .addComponent(History)
+                .addGap(29, 29, 29)
                 .addComponent(ViewButton, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(87, 87, 87)
+                .addGap(34, 34, 34)
                 .addComponent(DeleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(31, 31, 31)
                 .addComponent(BAck, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(48, 48, 48))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {BAck, DeleteButton, History, ViewButton});
+
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
@@ -153,13 +168,14 @@ public class FindBook extends javax.swing.JFrame {
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(SearchField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(SearchButton))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 309, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(DeleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(BAck, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ViewButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(BAck, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(History, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(4, 4, 4))
         );
 
@@ -227,6 +243,24 @@ public class FindBook extends javax.swing.JFrame {
              this.setVisible(false);
     }//GEN-LAST:event_BAckActionPerformed
 
+    private void HistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HistoryActionPerformed
+        int row=Table.getSelectedRow();
+        if(row<0){
+            JOptionPane.showMessageDialog(this, "You must select an Book", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        else{
+            try {
+                Book e=DB.Search(""+Table.getValueAt(row,2)).get(0);
+                System.out.println(e.getId());
+                
+                BookHistory v=new BookHistory(FindBook.this,e,true);
+                v.setVisible(true);
+            } catch (SQLException ex) {
+                System.out.println(ex);
+            }
+        }
+    }//GEN-LAST:event_HistoryActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -244,6 +278,7 @@ public class FindBook extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BAck;
     private javax.swing.JButton DeleteButton;
+    private javax.swing.JButton History;
     private javax.swing.JButton SearchButton;
     private javax.swing.JTextField SearchField;
     private javax.swing.JTable Table;

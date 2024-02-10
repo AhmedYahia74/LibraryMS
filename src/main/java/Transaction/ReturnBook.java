@@ -233,7 +233,7 @@ public class ReturnBook extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Invalid ISBN. Please enter a valid ISBN.", "Error", JOptionPane.ERROR_MESSAGE);
             return false;
         }
-        ArrayList<Book> lst = DAO.Search(Book_IdTXT.getText());
+        ArrayList<Book> lst = DAO.returnBookWithIdS(Book_IdTXT.getText());
         if (lst.size() == 0) {
             JOptionPane.showMessageDialog(this, "Book with ID " + Book_IdTXT.getText() + " not found.", "Error", JOptionPane.ERROR_MESSAGE);
             return false;

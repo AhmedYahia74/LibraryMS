@@ -36,7 +36,27 @@ public class TransactionDAO extends ConnectDB{
         statement.executeUpdate();
         statement.close();
     }
-     public ArrayList<Book>Search(String s) throws SQLException{
+     public ArrayList<Transaction>Search(int s) throws SQLException{
+        
+        ArrayList<Transaction> lst;
+        lst = new ArrayList<>();
+        PreparedStatement statement;
+        ResultSet result,res;
+        
+        statement = myconnection.prepareStatement("select * from Transactions where"
+                + " Book_Id = ?");
+     
+        statement.setInt(1, s);
+        result=statement.executeQuery();
+        while(result.next()){
+            Transaction temp=new Transaction(result);
+            lst.add(temp);
+        }
+     
+        return lst;
+        
+    }
+     public ArrayList<Book>returnBookWithIdS(String s) throws SQLException{
         
         ArrayList<Book> lst;
         lst = new ArrayList<>();
