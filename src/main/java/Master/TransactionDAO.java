@@ -75,14 +75,20 @@ public class TransactionDAO extends ConnectDB{
          }
          return true;
        }
-     public void delete(int Book_Id,String Customer_Id) throws SQLException{
+     public int delete(int Book_Id,String Customer_Id) throws SQLException{
            PreparedStatement statement;
            
         statement = myconnection.prepareStatement("delete from Transactions where Book_Id = ? and Customer_Id = ? ");
         statement.setInt(1, Book_Id);
         statement.setString(2,Customer_Id);
         statement.executeUpdate();
-      
+        statement = myconnection.prepareStatement("SELECT DATEDIFF(day, GETDATE(), date) AS difference_in_days " +
+"FROM Transactions");
+        ResultSet result=statement.executeQuery();
+         if(result.next()){
+             return result.getInt("difference_in_days");
+         }
+        return -1;      
      }
      
       public void UpdateBook(Book book) throws SQLException{

@@ -1,5 +1,6 @@
 package Employee;
 
+import Master.AdminMain;
 import Master.Validation;
 import Master.EmployeeDAO;
 import java.io.File;
@@ -203,7 +204,9 @@ public class AddEmployee extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackButtonActionPerformed
-        // TODO add your handling code here:
+       AdminMain r = new AdminMain();
+        r.setVisible(true);
+        this.setVisible(false);
     }//GEN-LAST:event_BackButtonActionPerformed
 
     private void SaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveButtonActionPerformed

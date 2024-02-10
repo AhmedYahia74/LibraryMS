@@ -28,11 +28,13 @@ public class ReturnBook extends javax.swing.JFrame {
     Validation validation;
     private String Employee_Id;
     TransactionDAO DAO;
+    int delay;
 
     public ReturnBook(String Employee_Id) throws IOException, FileNotFoundException, SQLException {
         this.Employee_Id = Employee_Id;
         validation = new Validation();
         DAO = new TransactionDAO();
+        delay = -1;
         initComponents();
     }
 
@@ -151,9 +153,16 @@ public class ReturnBook extends javax.swing.JFrame {
 
     private void SaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveButtonActionPerformed
         try {
-           if(delete_record())
-        JOptionPane.showMessageDialog(this, "Book returned successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
-            
+            String d = delay + "";
+            if (delete_record()) {
+                if (delay > 0) {
+                    JOptionPane.showMessageDialog(this, "Book returned successfully with delay " + d + "days.", "Success", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Book returned successfully with no dalay.", "Success", JOptionPane.INFORMATION_MESSAGE);
+                }
+
+            }
+
         } catch (SQLException e) {
             e.printStackTrace(); // Print the exception details to the console (optional)
             // Display a message dialog with the error message
@@ -163,9 +172,9 @@ public class ReturnBook extends javax.swing.JFrame {
     }//GEN-LAST:event_SaveButtonActionPerformed
 
     private void BackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackButtonActionPerformed
-         EmployeeMain r=new EmployeeMain(Employee_Id);
-             r.setVisible(true);
-             this.setVisible(false);
+        EmployeeMain r = new EmployeeMain(Employee_Id);
+        r.setVisible(true);
+        this.setVisible(false);
     }//GEN-LAST:event_BackButtonActionPerformed
 
     /**
@@ -226,15 +235,16 @@ public class ReturnBook extends javax.swing.JFrame {
         }
         ArrayList<Book> lst = DAO.Search(Book_IdTXT.getText());
         if (lst.size() == 0) {
-         JOptionPane.showMessageDialog(this, "Book with ID " + Book_IdTXT.getText() + " not found.", "Error", JOptionPane.ERROR_MESSAGE);
-         return false;
+            JOptionPane.showMessageDialog(this, "Book with ID " + Book_IdTXT.getText() + " not found.", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         if (!DAO.is_record_found(Integer.parseInt(Book_IdTXT.getText()), Customer_IdTXT.getText())) {
             JOptionPane.showMessageDialog(this, "You haven't borrowed this book.", "Error", JOptionPane.ERROR_MESSAGE);
             return false;
         }
-        DAO.delete(Integer.parseInt(Book_IdTXT.getText()), Customer_IdTXT.getText());
-        lst.get(0).setNo_Of_Copies(lst.get(0).getNo_Of_Copies()+1);
+        delay = DAO.delete(Integer.parseInt(Book_IdTXT.getText()), Customer_IdTXT.getText());
+        delay -= lst.get(0).getLoan_Period();
+        lst.get(0).setNo_Of_Copies(lst.get(0).getNo_Of_Copies() + 1);
         DAO.UpdateBook(lst.get(0));
         return true;
     }

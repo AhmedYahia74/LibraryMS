@@ -4,25 +4,16 @@
  */
 package Master;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 /**
  *
  * @author Ahmed yehia
  */
-public class EmployeeLogin extends javax.swing.JFrame {
+public class Adminlogin extends javax.swing.JFrame {
 
     /**
-     * Creates new form Login
+     * Creates new form Adminlogin
      */
-    EmployeeDAO DAO;
-
-    public EmployeeLogin() throws IOException, FileNotFoundException, SQLException {
-        DAO = new EmployeeDAO();        
+    public Adminlogin() {
         initComponents();
     }
 
@@ -35,8 +26,6 @@ public class EmployeeLogin extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        BackButton = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         IdTXT = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
@@ -45,23 +34,10 @@ public class EmployeeLogin extends javax.swing.JFrame {
         login_status = new javax.swing.JLabel();
         BackButton2 = new javax.swing.JButton();
 
-        BackButton.setBackground(new java.awt.Color(41, 128, 185));
-        BackButton.setFont(new java.awt.Font("SansSerif", 3, 18)); // NOI18N
-        BackButton.setForeground(new java.awt.Color(255, 255, 255));
-        BackButton.setText("Back");
-        BackButton.setActionCommand("Save");
-        BackButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BackButtonActionPerformed(evt);
-            }
-        });
-
-        jLabel2.setText("jLabel2");
-
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel6.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        jLabel6.setText(" Employee ID");
+        jLabel6.setText("Username");
 
         IdTXT.setToolTipText("");
         IdTXT.addActionListener(new java.awt.event.ActionListener() {
@@ -113,11 +89,11 @@ public class EmployeeLogin extends javax.swing.JFrame {
                             .addComponent(PasswordTXT, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)
                             .addComponent(IdTXT)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 15, Short.MAX_VALUE)
+                        .addGap(0, 16, Short.MAX_VALUE)
                         .addComponent(BackButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(105, 105, 105)
                         .addComponent(loginbutton, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(16, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(login_status, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -135,7 +111,7 @@ public class EmployeeLogin extends javax.swing.JFrame {
                     .addComponent(PasswordTXT, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
                 .addGap(8, 8, 8)
-                .addComponent(login_status, javax.swing.GroupLayout.DEFAULT_SIZE, 17, Short.MAX_VALUE)
+                .addComponent(login_status, javax.swing.GroupLayout.DEFAULT_SIZE, 16, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(loginbutton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -143,42 +119,31 @@ public class EmployeeLogin extends javax.swing.JFrame {
                 .addGap(17, 17, 17))
         );
 
-        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {IdTXT, PasswordTXT});
-
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void BackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_BackButtonActionPerformed
-
-    private void loginbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginbuttonActionPerformed
-        
-        try {
-            if (DAO.checkPassword(IdTXT.getText(), PasswordTXT.getText())) {
-                EmployeeMain mainform=new EmployeeMain(IdTXT.getText());
-                mainform.setVisible(true);
-                this.setVisible(false);
-            } else {
-                login_status.setText("Wrong Id or Password");
-                IdTXT.setText("");
-                PasswordTXT.setText("");
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(EmployeeLogin.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-    }//GEN-LAST:event_loginbuttonActionPerformed
-
-    private void BackButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackButton2ActionPerformed
-          Main m=new Main();
-         m.setVisible(true);
-        this.setVisible(false);
-    }//GEN-LAST:event_BackButton2ActionPerformed
 
     private void IdTXTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IdTXTActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_IdTXTActionPerformed
+
+    private void loginbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginbuttonActionPerformed
+
+            if (IdTXT.getText().equals("admin")&& PasswordTXT.getText().equals("admin")) {
+                AdminMain mainform=new AdminMain();
+                mainform.setVisible(true);
+                this.setVisible(false);
+            } else {
+                login_status.setText("Wrong Username or Password");
+                IdTXT.setText("");
+                PasswordTXT.setText("");      
+            }
+    }//GEN-LAST:event_loginbuttonActionPerformed
+
+    private void BackButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackButton2ActionPerformed
+         Main m=new Main();
+         m.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_BackButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -197,37 +162,28 @@ public class EmployeeLogin extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(EmployeeLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Adminlogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(EmployeeLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Adminlogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(EmployeeLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Adminlogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(EmployeeLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Adminlogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                try {
-                    new EmployeeLogin().setVisible(true);
-                } catch (IOException ex) {
-                    Logger.getLogger(EmployeeLogin.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (SQLException ex) {
-                    Logger.getLogger(EmployeeLogin.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                new Adminlogin().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton BackButton;
     private javax.swing.JButton BackButton2;
     private javax.swing.JTextField IdTXT;
     private javax.swing.JPasswordField PasswordTXT;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel login_status;
