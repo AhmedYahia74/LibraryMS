@@ -12,7 +12,7 @@ import java.io.File;
  */
 public class Validation {
     
-    public boolean Name(String s){
+    static public boolean Name(String s){
         if(s.length()==0)return false;
         for(char i:s.toCharArray()){
             if(i>='A'&&i<='Z')continue;
@@ -37,7 +37,7 @@ public class Validation {
         return s.length() != 0;
     }
     
-    public boolean Id(String s){
+   static public boolean Number(String s){
         if(s.length()==0)return false;
         for(char i : s.toCharArray()){
             if(i>='0'&&i<='9')continue;
@@ -46,7 +46,7 @@ public class Validation {
         return true;
     }
     
-    public boolean Photo(String s){
+   static public boolean Photo(String s){
         File PhotoFile=new File(s);
         return PhotoFile.exists();
     }
