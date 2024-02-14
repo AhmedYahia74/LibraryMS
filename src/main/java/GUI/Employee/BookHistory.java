@@ -6,13 +6,12 @@ package GUI.Employee;
 
 import Database.Book;
 import Database.TransactionDAO;
-import Transaction.Transaction;
-import Transaction.TransactionTableModel;
+import Database.Transaction;
+import business.TransactionTableModel;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 /**
  *
@@ -23,13 +22,12 @@ public class BookHistory extends javax.swing.JDialog {
     /**
      * Creates new form BookHistory
      */
-    TransactionDAO dao;
+ 
     public BookHistory(FindBook fnd,Book b, boolean modal) {
        super(fnd, modal);
         try {
             initComponents();
-            dao=new TransactionDAO();
-            ArrayList arr=dao.Search(b.getId());
+            ArrayList arr=TransactionDAO.Search(b.getId());
             showhistory(arr);
         } catch (SQLException ex) {
              System.out.println(ex);

@@ -93,15 +93,9 @@ public class Main extends javax.swing.JFrame {
 
     private void EmployeeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EmployeeActionPerformed
        EmployeeLogin a;
-        try {
-            a = new EmployeeLogin();
-            a.setVisible(true);
-        this.setVisible(false);
-        } catch (IOException ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-        }
+       a = new EmployeeLogin();
+       a.setVisible(true);
+       this.setVisible(false);
         
     }//GEN-LAST:event_EmployeeActionPerformed
 

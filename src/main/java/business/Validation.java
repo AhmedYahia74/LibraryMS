@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Master;
+package business;
 
 import java.io.File;
 
@@ -23,7 +23,7 @@ public class Validation {
         return true;
     }
     
-    public boolean Phone(String s){
+   static public boolean Phone(String s){
         if(s.charAt(0)!='0' || s.charAt(1)!='1')return false;
         if(s.length()!=11)return false;
         for(char i : s.toCharArray()){
@@ -33,7 +33,7 @@ public class Validation {
         return true;
     }
     
-    public boolean Password(String s){
+    static public boolean Password(String s){
         return s.length() != 0;
     }
     

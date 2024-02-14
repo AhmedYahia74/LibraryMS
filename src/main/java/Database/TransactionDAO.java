@@ -4,7 +4,6 @@
  */
 package Database;
 
-import Transaction.Transaction;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Connection;
@@ -18,14 +17,15 @@ import java.util.ArrayList;
  * @author Ahmed yehia
  */
 public class TransactionDAO extends ConnectDB{
-      private Connection myconnection;
+      static public Connection myconnection;
    
     
     public TransactionDAO() throws FileNotFoundException, IOException, SQLException{
       myconnection=TransactionDAO.getConnect();
     }
     
-    public void Save_Transaction(Transaction transaction) throws SQLException{
+   static public void Save_Transaction(Transaction transaction) throws SQLException, IOException{
+         myconnection=TransactionDAO.getConnect();
           PreparedStatement statement;
         statement = myconnection.prepareStatement("insert into Transactions (Book_Id,Employee_Id,Customer_Id,Date) values (?, ?, ?, ?)");
         statement.setInt(1, transaction.getBook_Id());
@@ -35,8 +35,8 @@ public class TransactionDAO extends ConnectDB{
         statement.executeUpdate();
         statement.close();
     }
-     public ArrayList<Transaction>Search(int s) throws SQLException{
-        
+    static public ArrayList<Transaction>Search(int s) throws SQLException, IOException{
+         myconnection=TransactionDAO.getConnect();
         ArrayList<Transaction> lst;
         lst = new ArrayList<>();
         PreparedStatement statement;
@@ -55,34 +55,9 @@ public class TransactionDAO extends ConnectDB{
         return lst;
         
     }
-     public ArrayList<Book>returnBookWithIdS(String s) throws SQLException{
-        
-        ArrayList<Book> lst;
-        lst = new ArrayList<>();
-        PreparedStatement statement;
-        ResultSet result,res;
-        
-         statement = myconnection.prepareStatement("select COUNT(*) AS cnt from Book where Id = ?");
-         statement.setInt(1, Integer.parseInt(s));
-         res=statement.executeQuery();
-         if(res.next()){
-             if(res.getInt("cnt")!=1)return lst;
-         }
-        statement = myconnection.prepareStatement("select * from Book where"
-                + " Id = ?");
-     
-        statement.setInt(1, Integer.parseInt(s));
-        result=statement.executeQuery();
-        while(result.next()){
-            Book temp=new Book(result);
-            lst.add(temp);
-        
-        }
-     
-        return lst;
-        
-    }
-     public boolean is_record_found(int Book_Id,String Customer_Id) throws SQLException{
+    
+    static public boolean is_record_found(int Book_Id,String Customer_Id) throws SQLException, IOException{
+          myconnection=TransactionDAO.getConnect();
            PreparedStatement statement;
                    ResultSet result;
         statement = myconnection.prepareStatement("select COUNT(*) AS cnt from Transactions where Book_Id = ? and Customer_Id = ? ");
@@ -94,7 +69,8 @@ public class TransactionDAO extends ConnectDB{
          }
          return true;
        }
-     public int delete(int Book_Id,String Customer_Id) throws SQLException{
+    static public int delete(int Book_Id,String Customer_Id) throws SQLException, IOException{
+          myconnection=TransactionDAO.getConnect();
            PreparedStatement statement;
            
         statement = myconnection.prepareStatement("delete from Transactions where Book_Id = ? and Customer_Id = ? ");
@@ -110,7 +86,8 @@ public class TransactionDAO extends ConnectDB{
         return -1;      
      }
      
-      public void UpdateBook(Book book) throws SQLException{
+     static public void UpdateBook(Book book) throws SQLException, IOException{
+           myconnection=TransactionDAO.getConnect();
         PreparedStatement statement;
         statement = myconnection.prepareStatement("update Book "
                 + "set Title='"+book.getTitle()+"', Author='"+book.getAuthor()+"', Language='" + book.getLanguage() + "',"

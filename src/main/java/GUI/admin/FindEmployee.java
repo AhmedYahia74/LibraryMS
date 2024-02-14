@@ -1,9 +1,9 @@
 package GUI.admin;
 
-import GUI.admin.AdminMain;
 import Database.EmployeeDAO;
-import Employee.Employee;
-import Employee.EmployeeTableModel;
+import Database.Employee;
+import business.EmployeeTableModel;
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -19,15 +19,9 @@ public class FindEmployee extends javax.swing.JFrame {
      * Creates new form EmployeeOperationsApp
      */
     
-    EmployeeDAO DB;
      EmployeeTableModel tbl;
     public FindEmployee() {
-        try{
-            DB=new EmployeeDAO();
-        }
-        catch(Exception e){
-          JOptionPane.showMessageDialog(this, "Error"+e, "Error", JOptionPane.ERROR_MESSAGE);
-        }
+       
         initComponents();
     }
 
@@ -169,12 +163,14 @@ public class FindEmployee extends javax.swing.JFrame {
 
     private void SearchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchButtonActionPerformed
          try{
-             ArrayList<Employee> lst= DB.Search(SearchField.getText());
+             ArrayList<Employee> lst= EmployeeDAO.Search(SearchField.getText());
             tbl=new EmployeeTableModel(lst);
              Table.setModel(tbl);
          } catch (SQLException ex) {
             Logger.getLogger(FindEmployee.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        } catch (IOException ex) {
+             Logger.getLogger(FindEmployee.class.getName()).log(Level.SEVERE, null, ex);
+         }
          
     }//GEN-LAST:event_SearchButtonActionPerformed
 
@@ -189,12 +185,14 @@ public class FindEmployee extends javax.swing.JFrame {
        }
        else{
         try {
-            Employee e=DB.Search((String)Table.getValueAt(row,2)).get(0);
-                    ViewEmployee v=new ViewEmployee(FindEmployee.this,DB,e,true);
+            Employee e=EmployeeDAO.Search((String)Table.getValueAt(row,2)).get(0);
+                    ViewEmployee v=new ViewEmployee(FindEmployee.this,e,true);
                     v.setVisible(true);
         } catch (SQLException ex) {
             Logger.getLogger(FindEmployee.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }  catch (IOException ex) {
+               Logger.getLogger(FindEmployee.class.getName()).log(Level.SEVERE, null, ex);
+           }
        }
       refresh();
     }//GEN-LAST:event_ViewButtonActionPerformed
@@ -210,11 +208,13 @@ public class FindEmployee extends javax.swing.JFrame {
           return;
       }
         try {
-            Employee e=DB.Search((String)Table.getValueAt(row,2)).get(0);
-            DB.DeleteEmploye(e.getId());
+            Employee e=EmployeeDAO.Search((String)Table.getValueAt(row,2)).get(0);
+            EmployeeDAO.DeleteEmploye(e.getId());
         } catch (SQLException ex) {
             Logger.getLogger(FindEmployee.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        } catch (IOException ex) {
+             Logger.getLogger(FindEmployee.class.getName()).log(Level.SEVERE, null, ex);
+         }
         
         refresh();
     }//GEN-LAST:event_DeleteButtonActionPerformed
@@ -227,12 +227,14 @@ public class FindEmployee extends javax.swing.JFrame {
 
     void refresh(){
          try{
-             ArrayList<Employee> lst= DB.Search(SearchField.getText());
+             ArrayList<Employee> lst= EmployeeDAO.Search(SearchField.getText());
             tbl=new EmployeeTableModel(lst);
              Table.setModel(tbl);
          } catch (SQLException ex) {
             Logger.getLogger(FindEmployee.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        } catch (IOException ex) {
+             Logger.getLogger(FindEmployee.class.getName()).log(Level.SEVERE, null, ex);
+         }
     }
     /**
      * @param args the command line arguments

@@ -9,7 +9,6 @@ package Database;
  * @author Ahmed yehia
  */
 
-import customerpkg.Customer;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -24,7 +23,7 @@ import java.util.logging.Logger;
  */
 public class CustomerDAO extends ConnectDB{
     
-    private Connection myconnection;
+    static public Connection myconnection;
    
     
     public CustomerDAO() throws FileNotFoundException, IOException, SQLException{
@@ -32,7 +31,8 @@ public class CustomerDAO extends ConnectDB{
         myconnection=CustomerDAO.getConnect();
     }
 
-   public void DeleteCustomer(String Id) throws SQLException{
+  static public void DeleteCustomer(String Id) throws SQLException, IOException{
+      myconnection=CustomerDAO.getConnect();
        PreparedStatement statement = null;
         try {
             statement=myconnection.prepareStatement("delete from Customer where Id=?");
@@ -43,8 +43,34 @@ public class CustomerDAO extends ConnectDB{
         statement.executeQuery();
                
    }
-    public ArrayList<Customer>Search(String s) throws SQLException{
+  static public ArrayList<Customer>returnCustomerWithIdS(String s) throws SQLException, IOException{
+         myconnection=CustomerDAO.getConnect();
+        ArrayList<Customer> lst;
+        lst = new ArrayList<>();
+        PreparedStatement statement;
+        ResultSet result,res;
         
+         statement = myconnection.prepareStatement("select COUNT(*) AS cnt from Customer where Id = ?");
+         statement.setString(1, s);
+         res=statement.executeQuery();
+         if(res.next()){
+             if(res.getInt("cnt")!=1)return lst;
+         }
+        statement = myconnection.prepareStatement("select * from Customer where"
+                + " Id = ?");
+     
+        statement.setString(1, s);
+        result=statement.executeQuery();
+        while(result.next()){
+            Customer temp=new Customer(result);
+            lst.add(temp);
+        }
+     
+        return lst;
+        
+    }
+    static public ArrayList<Customer>Search(String s) throws SQLException, IOException{
+        myconnection=CustomerDAO.getConnect();
         ArrayList<Customer> lst;
         lst = new ArrayList<>();
         s="%"+s+"%";
@@ -69,7 +95,8 @@ public class CustomerDAO extends ConnectDB{
         return lst;
         
     }
-    public void AdingCustomer(Customer customer) throws SQLException{
+    static public void AdingCustomer(Customer customer) throws SQLException, IOException{
+        myconnection=CustomerDAO.getConnect();
         PreparedStatement statement;
         statement = myconnection.prepareStatement("insert into Customer (First_Name, Last_Name, Id,"
                 + " Photo, Phone, Gender) values ('"+customer.getFirst_Name()+"',"
@@ -78,7 +105,8 @@ public class CustomerDAO extends ConnectDB{
         statement.executeUpdate();
         statement.close();
     }
-    public void UpdateCustomer(Customer customer) throws SQLException{
+    static public void UpdateCustomer(Customer customer) throws SQLException, IOException{
+        myconnection=CustomerDAO.getConnect();
         PreparedStatement statement;
         statement = myconnection.prepareStatement("update Customer "
                 + "set First_Name='"+customer.getFirst_Name()+"', Last_Name='"+customer.getLast_Name()+"',"

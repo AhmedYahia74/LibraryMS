@@ -7,7 +7,8 @@ package GUI.Employee;
 import Database.Book;
 import GUI.Employee.EmployeeMain;
 import Database.TransactionDAO;
-import Master.Validation;
+import business.Transaction_services;
+import business.Validation;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -25,22 +26,15 @@ public class ReturnBook extends javax.swing.JFrame {
     /**
      * Creates new form ReturnBook
      */
-    Validation validation;
     private String Employee_Id;
-    TransactionDAO DAO;
-    int delay;
 
     public ReturnBook(String Employee_Id) throws IOException, FileNotFoundException, SQLException {
         this.Employee_Id = Employee_Id;
-        validation = new Validation();
-        DAO = new TransactionDAO();
-        delay = -1;
         initComponents();
     }
 
     public ReturnBook() throws IOException, FileNotFoundException, SQLException {
-        validation = new Validation();
-        DAO = new TransactionDAO();
+      
         initComponents();
     }
 
@@ -72,6 +66,11 @@ public class ReturnBook extends javax.swing.JFrame {
         jLabel2.setText("Customer Id");
 
         Book_IdTXT.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        Book_IdTXT.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Book_IdTXTActionPerformed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("SansSerif", 2, 14)); // NOI18N
         jLabel3.setText("ISBN");
@@ -152,23 +151,19 @@ public class ReturnBook extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void SaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveButtonActionPerformed
+       
         try {
-            String d = delay + "";
-            if (delete_record()) {
-                if (delay > 0) {
-                    JOptionPane.showMessageDialog(this, "Book returned successfully with delay " + d + "days.", "Success", JOptionPane.INFORMATION_MESSAGE);
-                } else {
-                    JOptionPane.showMessageDialog(this, "Book returned successfully with no dalay.", "Success", JOptionPane.INFORMATION_MESSAGE);
-                }
-
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace(); // Print the exception details to the console (optional)
-            // Display a message dialog with the error message
-            String errorMessage = "An error occurred: " + e.getMessage();
-            JOptionPane.showMessageDialog(this, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+            String delay=""+Transaction_services.delete_record(Book_IdTXT.getText(),Customer_IdTXT.getText(), Employee_Id);
+         if (Integer.parseInt(delay)> 0) {
+             JOptionPane.showMessageDialog(this, "Book returned successfully with delay " + delay + "days.", "Success", JOptionPane.INFORMATION_MESSAGE);           
+        } else {
+          JOptionPane.showMessageDialog(this, "Book returned successfully with no delay ", "Success", JOptionPane.INFORMATION_MESSAGE);           
         }
+        } catch (Exception ex) {
+            Logger.getLogger(ReturnBook.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+                
+         
     }//GEN-LAST:event_SaveButtonActionPerformed
 
     private void BackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackButtonActionPerformed
@@ -177,46 +172,14 @@ public class ReturnBook extends javax.swing.JFrame {
         this.setVisible(false);
     }//GEN-LAST:event_BackButtonActionPerformed
 
+    private void Book_IdTXTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Book_IdTXTActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Book_IdTXTActionPerformed
+
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ReturnBook.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ReturnBook.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ReturnBook.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ReturnBook.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    new ReturnBook().setVisible(true);
-                } catch (IOException ex) {
-                    Logger.getLogger(ReturnBook.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (SQLException ex) {
-                    Logger.getLogger(ReturnBook.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-    }
+   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BackButton;
@@ -228,24 +191,5 @@ public class ReturnBook extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     // End of variables declaration//GEN-END:variables
 
-    private boolean delete_record() throws SQLException {
-        if (!validation.Id(Book_IdTXT.getText())) {
-            JOptionPane.showMessageDialog(this, "Invalid ISBN. Please enter a valid ISBN.", "Error", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-        ArrayList<Book> lst = DAO.returnBookWithIdS(Book_IdTXT.getText());
-        if (lst.size() == 0) {
-            JOptionPane.showMessageDialog(this, "Book with ID " + Book_IdTXT.getText() + " not found.", "Error", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-        if (!DAO.is_record_found(Integer.parseInt(Book_IdTXT.getText()), Customer_IdTXT.getText())) {
-            JOptionPane.showMessageDialog(this, "You haven't borrowed this book.", "Error", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-        delay = DAO.delete(Integer.parseInt(Book_IdTXT.getText()), Customer_IdTXT.getText());
-        delay -= lst.get(0).getLoan_Period();
-        lst.get(0).setNo_Of_Copies(lst.get(0).getNo_Of_Copies() + 1);
-        DAO.UpdateBook(lst.get(0));
-        return true;
-    }
+    
 }

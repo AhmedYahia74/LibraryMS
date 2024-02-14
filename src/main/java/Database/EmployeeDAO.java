@@ -1,18 +1,12 @@
 package Database;
 
-import Employee.Employee;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.*;
 import java.util.*;
-import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.crypto.Cipher;
-import javax.crypto.SecretKey;
-import java.util.Base64;
-import static javax.management.remote.JMXConnectorFactory.connect;
+
 
 /**
  *
@@ -20,13 +14,14 @@ import static javax.management.remote.JMXConnectorFactory.connect;
  */
 public class EmployeeDAO extends ConnectDB{
     
-    private Connection myconnection;
+    static public Connection myconnection;
 
     public EmployeeDAO() throws FileNotFoundException, IOException, SQLException{
         myconnection=EmployeeDAO.getConnect();
     }
 
-   public void DeleteEmploye(String Id) throws SQLException{
+  static public void DeleteEmploye(String Id) throws SQLException, IOException{
+        myconnection=EmployeeDAO.getConnect();
        PreparedStatement statement = null;
         try {
             statement=myconnection.prepareStatement("delete from Employee where Employee_Id=?");
@@ -37,8 +32,8 @@ public class EmployeeDAO extends ConnectDB{
         statement.executeQuery();
                
    }
-    public ArrayList<Employee> Search(String s) throws SQLException{
-        
+   static public ArrayList<Employee> Search(String s) throws SQLException, IOException{
+        myconnection=EmployeeDAO.getConnect();
         ArrayList<Employee> lst;
         lst = new ArrayList<>();
         s="%"+s+"%";
@@ -63,7 +58,8 @@ public class EmployeeDAO extends ConnectDB{
         return lst;
         
     }
-    public void AdingEmployee(Employee employee) throws SQLException{
+    static public void AdingEmployee(Employee employee) throws SQLException, IOException{
+        myconnection=EmployeeDAO.getConnect();
         PreparedStatement statement;
         statement = myconnection.prepareStatement("insert into Employee (First_Name, Last_Name, Employee_Id,"
                 + " Photo, Phone, Gender, Password) values ('"+employee.getFirst_Name()+"',"
@@ -72,7 +68,8 @@ public class EmployeeDAO extends ConnectDB{
         statement.executeUpdate();
         statement.close();
     }
-    public void UpdateEmployee(Employee employee) throws SQLException{
+   static public void UpdateEmployee(Employee employee) throws SQLException, IOException{
+       myconnection=EmployeeDAO.getConnect();
         PreparedStatement statement;
         statement = myconnection.prepareStatement("update Employee "
                 + "set First_Name='"+employee.getFirst_Name()+"', Last_Name='"+employee.getLast_Name()+"',"
@@ -81,8 +78,8 @@ public class EmployeeDAO extends ConnectDB{
         statement.executeUpdate();
         statement.close();
     }
-     public ArrayList<Employee> get(String s) throws SQLException{
-        
+    static public ArrayList<Employee> get(String s) throws SQLException, IOException{
+        myconnection=EmployeeDAO.getConnect();
         ArrayList<Employee> lst;
         lst = new ArrayList<>();
         PreparedStatement statement;
@@ -101,22 +98,10 @@ public class EmployeeDAO extends ConnectDB{
         return lst;
         
     }
-    public boolean checkPassword(String id,String pass) throws SQLException{
-        ArrayList<Employee> temp=get(id);
+    static public boolean checkPassword(String id,String pass) throws SQLException, IOException{
+        
+        ArrayList<Employee> temp=EmployeeDAO.get(id);
         return !(temp.size()!=1 || !temp.get(0).getPassword().equals(pass));
     }
-    private static String encrypt(String data, SecretKey secretKey) throws Exception {
-        Cipher cipher = Cipher.getInstance("AES");
-        cipher.init(Cipher.ENCRYPT_MODE, secretKey);
-        byte[] encryptedBytes = cipher.doFinal(data.getBytes());
-        return Base64.getEncoder().encodeToString(encryptedBytes);
-    }
-
-    private static String decrypt(String encryptedData, SecretKey secretKey) throws Exception {
-        Cipher cipher = Cipher.getInstance("AES");
-        cipher.init(Cipher.DECRYPT_MODE, secretKey);
-        byte[] encryptedBytes = Base64.getDecoder().decode(encryptedData);
-        byte[] decryptedBytes = cipher.doFinal(encryptedBytes);
-        return new String(decryptedBytes);
-    }
+   
 }

@@ -6,7 +6,6 @@ package GUI.Employee;
 
 import Database.EmployeeDAO;
 import GUI.Main;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -21,10 +20,8 @@ public class EmployeeLogin extends javax.swing.JFrame {
     /**
      * Creates new form Login
      */
-    EmployeeDAO DAO;
 
-    public EmployeeLogin() throws IOException, FileNotFoundException, SQLException {
-        DAO = new EmployeeDAO();        
+    public EmployeeLogin(){
         initComponents();
     }
 
@@ -157,7 +154,7 @@ public class EmployeeLogin extends javax.swing.JFrame {
     private void loginbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginbuttonActionPerformed
         
         try {
-            if (DAO.checkPassword(IdTXT.getText(), PasswordTXT.getText())) {
+            if (EmployeeDAO.checkPassword(IdTXT.getText(), PasswordTXT.getText())) {
                 EmployeeMain mainform=new EmployeeMain(IdTXT.getText());
                 mainform.setVisible(true);
                 this.setVisible(false);
@@ -166,7 +163,7 @@ public class EmployeeLogin extends javax.swing.JFrame {
                 IdTXT.setText("");
                 PasswordTXT.setText("");
             }
-        } catch (SQLException ex) {
+        } catch (SQLException | IOException ex) {
             Logger.getLogger(EmployeeLogin.class.getName()).log(Level.SEVERE, null, ex);
         }
         
@@ -182,47 +179,7 @@ public class EmployeeLogin extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_IdTXTActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(EmployeeLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(EmployeeLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(EmployeeLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(EmployeeLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    new EmployeeLogin().setVisible(true);
-                } catch (IOException ex) {
-                    Logger.getLogger(EmployeeLogin.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (SQLException ex) {
-                    Logger.getLogger(EmployeeLogin.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-    }
+   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BackButton;

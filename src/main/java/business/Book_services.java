@@ -52,7 +52,6 @@ public class Book_services {
             temp.setPhoto(book.getPhoto());
         }
         temp.setLanguage(LanguageBOX);
-        BookDAO d = new BookDAO();
         temp.setLoan_Period(book.getLoan_Period());
         BookDAO.UpdateBook(temp);
     }

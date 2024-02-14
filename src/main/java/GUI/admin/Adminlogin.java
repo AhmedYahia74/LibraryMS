@@ -5,7 +5,12 @@
 package GUI.admin;
 
 import GUI.Main;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -130,9 +135,11 @@ public class Adminlogin extends javax.swing.JFrame {
     }//GEN-LAST:event_IdTXTActionPerformed
 
     private void loginbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginbuttonActionPerformed
-          Properties prop=new Properties();       
-        String user=prop.getProperty("user");
-        String password=prop.getProperty("password");
+        try {
+            Properties prop=new Properties();
+            prop.load(new FileInputStream("databaseConnection.Properties"));
+            String user=prop.getProperty("user");
+            String password=prop.getProperty("password");
             if (IdTXT.getText().equals(user)&& PasswordTXT.getText().equals(password)) {
                 AdminMain mainform=new AdminMain();
                 mainform.setVisible(true);
@@ -142,6 +149,11 @@ public class Adminlogin extends javax.swing.JFrame {
                 IdTXT.setText("");
                 PasswordTXT.setText("");      
             }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Adminlogin.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Adminlogin.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_loginbuttonActionPerformed
 
     private void BackButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackButton2ActionPerformed

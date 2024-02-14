@@ -6,7 +6,7 @@ package GUI.Employee;
 
 import Database.Book;
 import Database.BookDAO;
-import Master.Validation;
+import business.Validation;
 import business.Book_services;
 import java.awt.Image;
 import java.io.File;

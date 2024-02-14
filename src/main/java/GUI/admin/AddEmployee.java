@@ -1,16 +1,9 @@
 package GUI.admin;
 
-import GUI.admin.AdminMain;
-import Master.Validation;
-import Database.EmployeeDAO;
-import Employee.Employee;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import business.Employee_services;
+
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -213,50 +206,21 @@ public class AddEmployee extends javax.swing.JFrame {
     private void SaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveButtonActionPerformed
         try {
             // TODO add your handling code here:
-            SaveEmployee();
+            Employee_services.SaveEmployee(First_NameTXT.getText(), Last_NameTXT.getText(), IdTXT.getText(), PasswordTXT.getText(), PhoneTXT.getText(),
+                    PhotoTXT.getText(), (String) GenderBOX.getSelectedItem()); 
+            
+            JOptionPane.showMessageDialog(this, "Employee added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            clear();
         } catch (IOException ex) {
-            Logger.getLogger(AddEmployee.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         } catch (SQLException ex) {
-            Logger.getLogger(AddEmployee.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         } catch (Exception ex) {
-            Logger.getLogger(AddEmployee.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_SaveButtonActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AddEmployee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AddEmployee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AddEmployee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AddEmployee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new AddEmployee().setVisible(true);
-            }
-        });
-    }
+  
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BackButton;
@@ -278,78 +242,7 @@ public class AddEmployee extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     // End of variables declaration//GEN-END:variables
 
-    private void SaveEmployee() throws IOException, FileNotFoundException, SQLException, Exception {
-        Employee temp=new Employee();
-        Validation v=new Validation();
-        
-        if(v.Name(First_NameTXT.getText())){
-            temp.setFirst_Name(First_NameTXT.getText());
-        }
-        else {
-            JOptionPane.showMessageDialog(this, "Invalid First Name. Please enter a valid first name.", "Error", JOptionPane.ERROR_MESSAGE);  
-            return;
-        }
-        
-        if(v.Name(Last_NameTXT.getText())){
-            temp.setLast_Name(Last_NameTXT.getText());
-        }
-        else {
-            JOptionPane.showMessageDialog(this, "Invalid Last Name. Please enter a valid last name.", "Error", JOptionPane.ERROR_MESSAGE);  
-            return;
-        }
-        
-        
-        if(v.Id(IdTXT.getText())){
-            temp.setId(IdTXT.getText());
-        }
-        else {
-            JOptionPane.showMessageDialog(this, "Invalid ID. Please enter a valid ID.", "Error", JOptionPane.ERROR_MESSAGE);  
-            return;
-        }
-  
-        
-         if(v.Password(PasswordTXT.getText())){
-            temp.setPassword(PasswordTXT.getText());
-        }
-       else {
-            JOptionPane.showMessageDialog(this, "Invalid Password. Please enter a valid Password.", "Error", JOptionPane.ERROR_MESSAGE);  
-            return;
-        }
-         
-        if(v.Phone(PhoneTXT.getText())){
-            temp.setPhone(PhoneTXT.getText());
-        }
-        else {
-            JOptionPane.showMessageDialog(this, "Invalid Phone. Please enter a valid Phone.", "Error", JOptionPane.ERROR_MESSAGE);  
-            return;
-        }
-        
-        if(v.Photo(PhotoTXT.getText())){
-          try{
-              File file=new File(PhotoTXT.getText());
-              FileInputStream fis = new FileInputStream(file);
-            byte[] data= new byte[(int) file.length()];
-            fis.read(data);
-            temp.setPhoto(data);
-          } catch (FileNotFoundException ex) {
-           JOptionPane.showMessageDialog(this, "Invalid Path. Please enter a valid path.", "Error", JOptionPane.ERROR_MESSAGE);  
-            return;
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(this, "Invalid Path. Please enter a valid path.", "Error", JOptionPane.ERROR_MESSAGE);  
-            return;
-            }
-        }
-        else {
-            JOptionPane.showMessageDialog(this, "Invalid Path. Please enter a valid path.", "Error", JOptionPane.ERROR_MESSAGE);  
-            return;
-        }
-        temp.setGender((String) GenderBOX.getSelectedItem());
-        EmployeeDAO d=new EmployeeDAO();
-        d.AdingEmployee(temp);
-        clear();
-        JOptionPane.showMessageDialog(this, "Employee added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-
-    }
+    
 
     private void clear() {
         First_NameTXT.setText("");

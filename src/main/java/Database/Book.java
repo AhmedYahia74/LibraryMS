@@ -4,7 +4,7 @@
  */
 package Database;
 
-import Master.Validation;
+import business.Validation;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

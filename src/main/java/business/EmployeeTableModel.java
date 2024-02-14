@@ -1,8 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-package customerpkg;
+package business;
+
+import Database.Employee;
 import java.util.List;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
@@ -11,24 +9,26 @@ import javax.swing.table.AbstractTableModel;
  *
  * @author Ahmed yehia
  */
-public class CustomerTableModel extends AbstractTableModel {
-    
+public class EmployeeTableModel extends AbstractTableModel {
+
+
     private static final int FirstNameCol=0;
     private static final int LastNameCol=1;
     private static final int IdCol=2;
     private static final int GenderCol=3;
+    private static final int PasswordCol=4;
     private static final int PhotoCol=5;
     private static final int PhoneCol=3;
     
    
     private String[] columns={"First Name","Last Name","Id","Phone"};
-    private List<Customer> customers;
-    public CustomerTableModel(List<Customer> list){
-        this.customers=list;
+    private List<Employee> employees;
+    public EmployeeTableModel(List<Employee> list){
+        this.employees=list;
     }
     @Override
     public int getRowCount() {
-        return customers.size();
+        return employees.size();
     }
 
     @Override
@@ -53,17 +53,17 @@ public class CustomerTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        Customer customer=customers.get(rowIndex);
+        Employee employee=employees.get(rowIndex);
         //    private String[] columns={"First Name","Last Name","Id","Gender","Password","Photo","Phone"};
         switch (columnIndex){
-            case FirstNameCol:return customer.getFirst_Name();
-            case LastNameCol:return customer.getLast_Name();
-            case IdCol:return customer.getId();
-//            case GenderCol:return customer.getGender();
-//            case PasswordCol:return customer.getPassword();
-//            case PhotoCol:return customer.getPhoto();
+            case FirstNameCol:return employee.getFirst_Name();
+            case LastNameCol:return employee.getLast_Name();
+            case IdCol:return employee.getId();
+//            case GenderCol:return employee.getGender();
+//            case PasswordCol:return employee.getPassword();
+//            case PhotoCol:return employee.getPhoto();
            
-            default:return customer.getPhone();
+            default:return employee.getPhone();
         }
     }
 

@@ -4,19 +4,10 @@
  */
 package GUI.Employee;
 
-import Database.Book;
-import Master.Validation;
-import Database.BookDAO;
-import Employee.*;
-import GUI.Employee.EmployeeMain;
+
 import business.Book_services;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**

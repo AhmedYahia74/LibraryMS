@@ -7,8 +7,9 @@ package GUI.Employee;
 import Database.TransactionDAO;
 import Database.Book;
 import GUI.Employee.EmployeeMain;
-import Master.Validation;
-import Transaction.Transaction;
+import business.Validation;
+import Database.Transaction;
+import business.Transaction_services;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Date;
@@ -27,20 +28,16 @@ public class Borrow extends javax.swing.JFrame {
     /**
      * Creates new form Borrow
      */
-    Validation validation;
+    
     private String Employee_Id;
-    TransactionDAO DAO;
 
     public Borrow(String Employee_Id) throws IOException, FileNotFoundException, SQLException {
         this.Employee_Id = Employee_Id;
-        validation = new Validation();
-        DAO = new TransactionDAO();
         initComponents();
     }
 
     public Borrow() throws IOException, FileNotFoundException, SQLException {
-        validation = new Validation();
-        DAO = new TransactionDAO();
+       
         initComponents();
     }
 
@@ -154,15 +151,13 @@ public class Borrow extends javax.swing.JFrame {
 
     private void SaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveButtonActionPerformed
         try {
-            Borrow_a_book();
-        } catch (SQLException e) {
-            // Handle the exception
-            e.printStackTrace(); // Print the exception details to the console (optional)
-
+            Transaction_services.Borrow_a_book(Book_IdTXT.getText(),Customer_IdTXT.getText(), Employee_Id);
+        } catch (SQLException |IOException  e) { 
             // Display a message dialog with the error message
             String errorMessage = "An error occurred: " + e.getMessage();
-            JOptionPane.showMessageDialog(this, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
-        }
+            JOptionPane.showMessageDialog(this, errorMessage, "", JOptionPane.ERROR_MESSAGE);
+        } 
+        
     }//GEN-LAST:event_SaveButtonActionPerformed
 
     private void BackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackButtonActionPerformed
@@ -174,43 +169,7 @@ public class Borrow extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Borrow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Borrow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Borrow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Borrow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    new Borrow().setVisible(true);
-                } catch (IOException ex) {
-                    Logger.getLogger(Borrow.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (SQLException ex) {
-                    Logger.getLogger(Borrow.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-    }
+  
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BackButton;
@@ -222,40 +181,4 @@ public class Borrow extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     // End of variables declaration//GEN-END:variables
 
-    private void Borrow_a_book() throws SQLException {
-        if (!validation.Id(Book_IdTXT.getText())) {
-            JOptionPane.showMessageDialog(this, "Invalid ISBN. Please enter a valid ISBN.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        ArrayList<Book> lst = DAO.returnBookWithIdS(Book_IdTXT.getText());
-        if (lst.size() == 0) {
-            JOptionPane.showMessageDialog(this, "Book with ISBN " + Book_IdTXT.getText() + " not found.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        if (lst.get(0).getNo_Of_Copies() == 0) {
-            JOptionPane.showMessageDialog(this, "Book with ISBN " + lst.get(0).getTitle() + " not found.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        Transaction t = new Transaction();
-        t.setBook_Id(Integer.parseInt(Book_IdTXT.getText()));
-        if (!validation.Id(Customer_IdTXT.getText())) {
-            JOptionPane.showMessageDialog(this, "Invalid Customer Id Please enter a valid Customer Id.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        if (DAO.is_record_found(Integer.parseInt(Book_IdTXT.getText()), Customer_IdTXT.getText())) {
-            JOptionPane.showMessageDialog(this, "Sorry, you have already borrowed this book.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        t.setCustomer_Id(Customer_IdTXT.getText());
-        t.setEmployee_Id(Employee_Id);
-        java.sql.Date currentDate = new java.sql.Date(System.currentTimeMillis());
-        t.setDate(currentDate);
-        DAO.Save_Transaction(t);
-        lst.get(0).setNo_Of_Copies(lst.get(0).getNo_Of_Copies() - 1);
-        DAO.UpdateBook(lst.get(0));
-        JOptionPane.showMessageDialog(this, "Book borrowed successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
-
-    }
 }

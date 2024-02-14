@@ -207,16 +207,9 @@ public class EmployeeMain extends javax.swing.JFrame {
     }//GEN-LAST:event_ReturnBookActionPerformed
 
     private void LogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LogOutActionPerformed
-         try {
-             EmployeeLogin l=new EmployeeLogin();
-             l.setVisible(true);
-             this.setVisible(false);
-         } catch (IOException ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-         }
-        
+        EmployeeLogin l=new EmployeeLogin();
+        l.setVisible(true);
+        this.setVisible(false);
     }//GEN-LAST:event_LogOutActionPerformed
 
     private void AddBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddBookActionPerformed

@@ -8,28 +8,20 @@ package GUI.Employee;
  *
  * @author Ahmed yehia
  */
-import Database.CustomerDAO;
-import Master.Validation;
-import customerpkg.Customer;
+import business.Validation;
+import Database.Customer;
+import business.Customer_services;
 import java.awt.Image;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 public class ViewCustomer extends javax.swing.JDialog {
 
-    /**
-     * Creates new form ViewCustomer
-     */
-     private CustomerDAO DAO;
     private Customer customer;
     private FindCustomer findform;
-    public ViewCustomer(FindCustomer fnd,CustomerDAO dao,Customer customer, boolean modal) {
+    public ViewCustomer(FindCustomer fnd,Customer customer, boolean modal) {
         super(fnd, modal);
-        this.DAO=dao;
         this.findform=fnd;
         this.customer=customer;
         initComponents();
@@ -191,14 +183,17 @@ public class ViewCustomer extends javax.swing.JDialog {
     private void SaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveButtonActionPerformed
         try {
             // TODO add your handling code here:
-            SaveCustomer();
+            Customer_services.UpdateCustomer(First_NameTXT.getText(), Last_NameTXT.getText(), IdTXT.getText(), PhoneTXT.getText(),
+                    PhotoTXT.getText(), (String) GenderBOX.getSelectedItem(), customer);
+            setVisible(false);
+            dispose();
+
+            JOptionPane.showMessageDialog(this, "Customer updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
 
         } catch (IOException | SQLException ex) {
-            // Log the exception details
-            ex.printStackTrace();
 
-            // Optionally, show a user-friendly error message
-            JOptionPane.showMessageDialog(this, "An error occurred. Please check the logs for details.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+
         }
 
     }//GEN-LAST:event_SaveButtonActionPerformed
@@ -225,69 +220,6 @@ public class ViewCustomer extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel9;
     // End of variables declaration//GEN-END:variables
 
-    private void SaveCustomer() throws IOException, FileNotFoundException, SQLException {
-        Customer temp=new Customer();
-        Validation v=new Validation();
-        
-        if(v.Name(First_NameTXT.getText())){
-            temp.setFirst_Name(First_NameTXT.getText());
-        }
-        else {
-            JOptionPane.showMessageDialog(this, "Invalid First Name. Please enter a valid first name.", "Error", JOptionPane.ERROR_MESSAGE);  
-            return;
-        }
-        
-        if(v.Name(Last_NameTXT.getText())){
-            temp.setLast_Name(Last_NameTXT.getText());
-        }
-        else {
-            JOptionPane.showMessageDialog(this, "Invalid Last Name. Please enter a valid last name.", "Error", JOptionPane.ERROR_MESSAGE);  
-            return;
-        }
-        
-        
-        if(v.Phone(PhoneTXT.getText())){
-            temp.setPhone(PhoneTXT.getText());
-        }
-        else {
-            JOptionPane.showMessageDialog(this, "Invalid Phone. Please enter a valid Phone.", "Error", JOptionPane.ERROR_MESSAGE);  
-            return;
-        }
-        
-        
-        if(v.Photo(PhotoTXT.getText())){
-          try{
-              File file=new File(PhotoTXT.getText());
-              FileInputStream fis = new FileInputStream(file);
-            byte[] data= new byte[(int) file.length()];
-            fis.read(data);
-            temp.setPhoto(data);
-          } catch (FileNotFoundException ex) {
-           JOptionPane.showMessageDialog(this, "Invalid Path. Please enter a valid path.", "Error", JOptionPane.ERROR_MESSAGE);  
-            return;
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(this, "Invalid Path. Please enter a valid path.", "Error", JOptionPane.ERROR_MESSAGE);  
-            return;
-            }
-        }
-        else if(PhotoTXT.getText().length()==0) {
-            temp.setPhoto(customer.getPhoto());
-        }
-        else {
-            
-            JOptionPane.showMessageDialog(this, "Invalid Path. Please enter a valid path.", "Error", JOptionPane.ERROR_MESSAGE);  
-            return;
-        }
-        temp.setGender((String) GenderBOX.getSelectedItem());
-        temp.setId(IdTXT.getText());
-        DAO.UpdateCustomer(temp);
-       // clear();
-       setVisible(false);
-       dispose();
-     
-       JOptionPane.showMessageDialog(this, "Customer updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-
-    }
 
     private void ShowData(Customer customer) {
         First_NameTXT.setText(customer.getFirst_Name());

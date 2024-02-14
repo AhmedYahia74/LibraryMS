@@ -2,9 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Transaction;
+package business;
 
-import Transaction.Transaction;
+import Database.Transaction;
 import java.util.List;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;

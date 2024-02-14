@@ -4,10 +4,10 @@
  */
 package GUI.Employee;
 
+import Database.Customer;
 import Database.CustomerDAO;
-import GUI.Employee.EmployeeMain;
-import customerpkg.Customer;
-import customerpkg.CustomerTableModel;
+import business.CustomerTableModel;
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -23,17 +23,11 @@ public class FindCustomer extends javax.swing.JFrame {
      * Creates new form FindCustomer
      */
    
-    CustomerDAO DB;
+    
      CustomerTableModel tbl;
      String Employee_Id;
     public FindCustomer(String Employee_Id) {
         this.Employee_Id=Employee_Id;
-        try{
-            DB=new CustomerDAO();
-        }
-        catch(Exception e){
-          JOptionPane.showMessageDialog(this, "Error"+e, "Error", JOptionPane.ERROR_MESSAGE);
-        }
         initComponents();
     }
 
@@ -175,12 +169,14 @@ public class FindCustomer extends javax.swing.JFrame {
 
     private void SearchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchButtonActionPerformed
         try{
-            ArrayList<Customer> lst= DB.Search(SearchField.getText());
+            ArrayList<Customer> lst= CustomerDAO.Search(SearchField.getText());
             tbl=new CustomerTableModel(lst);
             Table.setModel(tbl);
         } catch (SQLException ex) {
             Logger.getLogger(FindCustomer.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        } catch (IOException ex) {
+             Logger.getLogger(FindCustomer.class.getName()).log(Level.SEVERE, null, ex);
+         }
 
     }//GEN-LAST:event_SearchButtonActionPerformed
 
@@ -195,10 +191,12 @@ public class FindCustomer extends javax.swing.JFrame {
         }
         else{
             try {
-                Customer e=DB.Search((String)Table.getValueAt(row,2)).get(0);
-                ViewCustomer v=new ViewCustomer(FindCustomer.this,DB,e,true);
+                Customer e=CustomerDAO.Search((String)Table.getValueAt(row,2)).get(0);
+                ViewCustomer v=new ViewCustomer(FindCustomer.this,e,true);
                 v.setVisible(true);
             } catch (SQLException ex) {
+                Logger.getLogger(FindCustomer.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
                 Logger.getLogger(FindCustomer.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
@@ -216,11 +214,13 @@ public class FindCustomer extends javax.swing.JFrame {
             return;
         }
         try {
-            Customer e=DB.Search((String)Table.getValueAt(row,2)).get(0);
-            DB.DeleteCustomer(e.getId());
+            Customer e=CustomerDAO.Search((String)Table.getValueAt(row,2)).get(0);
+            CustomerDAO.DeleteCustomer(e.getId());
         } catch (SQLException ex) {
             Logger.getLogger(FindCustomer.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        } catch (IOException ex) {
+             Logger.getLogger(FindCustomer.class.getName()).log(Level.SEVERE, null, ex);
+         }
 
         refresh();
     }//GEN-LAST:event_DeleteButtonActionPerformed
@@ -232,12 +232,14 @@ public class FindCustomer extends javax.swing.JFrame {
     }//GEN-LAST:event_BackActionPerformed
     void refresh(){
             try{
-                ArrayList<Customer> lst= DB.Search(SearchField.getText());
+                ArrayList<Customer> lst= CustomerDAO.Search(SearchField.getText());
                tbl=new CustomerTableModel(lst);
                 Table.setModel(tbl);
             } catch (SQLException ex) {
                Logger.getLogger(FindCustomer.class.getName()).log(Level.SEVERE, null, ex);
-           }
+           } catch (IOException ex) {
+             Logger.getLogger(FindCustomer.class.getName()).log(Level.SEVERE, null, ex);
+         }
        }
     /**
      * @param args the command line arguments

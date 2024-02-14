@@ -38,6 +38,36 @@ public class BookDAO extends ConnectDB {
 
     }
 
+    static public ArrayList<Book> returnBookWithIdS(String s) throws SQLException, IOException {
+        myconnection = BookDAO.getConnect();
+        ArrayList<Book> lst;
+        lst = new ArrayList<>();
+        PreparedStatement statement;
+        ResultSet result, res;
+
+        statement = myconnection.prepareStatement("select COUNT(*) AS cnt from Book where Id = ?");
+        statement.setInt(1, Integer.parseInt(s));
+        res = statement.executeQuery();
+        if (res.next()) {
+            if (res.getInt("cnt") != 1) {
+                return lst;
+            }
+        }
+        statement = myconnection.prepareStatement("select * from Book where"
+                + " Id = ?");
+
+        statement.setInt(1, Integer.parseInt(s));
+        result = statement.executeQuery();
+        while (result.next()) {
+            Book temp = new Book(result);
+            lst.add(temp);
+
+        }
+
+        return lst;
+
+    }
+
     static public ArrayList<Book> Search(String s) throws SQLException, IOException {
         BookDAO.connect();
         ArrayList<Book> lst;

@@ -4,17 +4,12 @@
  */
 package GUI.admin;
 
-import Master.Validation;
-import Database.EmployeeDAO;
-import Employee.Employee;
+
+import Database.Employee;
+import business.Employee_services;
 import java.awt.Image;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
@@ -27,18 +22,16 @@ public class ViewEmployee extends javax.swing.JDialog {
     /**
      * Creates new form ViewEmployee
      */
-    private EmployeeDAO DAO;
     private Employee employee;
     private FindEmployee findform;
-    public ViewEmployee(FindEmployee fnd,EmployeeDAO dao,Employee employee, boolean modal) {
+
+    public ViewEmployee(FindEmployee fnd, Employee employee, boolean modal) {
         super(fnd, modal);
-        this.DAO=dao;
-        this.findform=fnd;
-        this.employee=employee;
+        this.findform = fnd;
+        this.employee = employee;
         initComponents();
-       ShowData(employee);
+        ShowData(employee);
     }
-   
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -199,19 +192,21 @@ public class ViewEmployee extends javax.swing.JDialog {
     private void SaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveButtonActionPerformed
         try {
             // TODO add your handling code here:
-            SaveEmployee();
-            
+            Employee_services.UpdateEmployee(First_NameTXT.getText(), Last_NameTXT.getText(), IdTXT.getText(), PasswordTXT.getText(), PhoneTXT.getText(),
+                    PhotoTXT.getText(), (String) GenderBOX.getSelectedItem(), employee);
+            setVisible(false);
+            dispose();
+
+            JOptionPane.showMessageDialog(this, "Employee updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+
         } catch (IOException | SQLException ex) {
-        // Log the exception details
-        ex.printStackTrace();
-        
-        // Optionally, show a user-friendly error message
-        JOptionPane.showMessageDialog(this, "An error occurred. Please check the logs for details.", "Error", JOptionPane.ERROR_MESSAGE);
-    }
-        
+
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+
+        }
+
     }//GEN-LAST:event_SaveButtonActionPerformed
 
-  
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField First_NameTXT;
@@ -232,96 +227,20 @@ public class ViewEmployee extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel9;
     // End of variables declaration//GEN-END:variables
 
-private void SaveEmployee() throws IOException, FileNotFoundException, SQLException {
-        Employee temp=new Employee();
-        Validation v=new Validation();
-        
-        if(v.Name(First_NameTXT.getText())){
-            temp.setFirst_Name(First_NameTXT.getText());
-        }
-        else {
-            JOptionPane.showMessageDialog(this, "Invalid First Name. Please enter a valid first name.", "Error", JOptionPane.ERROR_MESSAGE);  
-            return;
-        }
-        
-        if(v.Name(Last_NameTXT.getText())){
-            temp.setLast_Name(Last_NameTXT.getText());
-        }
-        else {
-            JOptionPane.showMessageDialog(this, "Invalid Last Name. Please enter a valid last name.", "Error", JOptionPane.ERROR_MESSAGE);  
-            return;
-        }
-        
-        
-        
-         if(v.Password(PasswordTXT.getText())){
-            temp.setPassword(PasswordTXT.getText());
-        }
-       else {
-            JOptionPane.showMessageDialog(this, "Invalid Password. Please enter a valid Password.", "Error", JOptionPane.ERROR_MESSAGE);  
-            return;
-        }
-         
-        if(v.Phone(PhoneTXT.getText())){
-            temp.setPhone(PhoneTXT.getText());
-        }
-        else {
-            JOptionPane.showMessageDialog(this, "Invalid Phone. Please enter a valid Phone.", "Error", JOptionPane.ERROR_MESSAGE);  
-            return;
-        }
-        
-        
-        if(v.Photo(PhotoTXT.getText())){
-          try{
-              File file=new File(PhotoTXT.getText());
-              FileInputStream fis = new FileInputStream(file);
-            byte[] data= new byte[(int) file.length()];
-            fis.read(data);
-            temp.setPhoto(data);
-          } catch (FileNotFoundException ex) {
-           JOptionPane.showMessageDialog(this, "Invalid Path. Please enter a valid path.", "Error", JOptionPane.ERROR_MESSAGE);  
-            return;
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(this, "Invalid Path. Please enter a valid path.", "Error", JOptionPane.ERROR_MESSAGE);  
-            return;
-            }
-        }
-        else if(PhotoTXT.getText().length()==0) {
-            temp.setPhoto(employee.getPhoto());
-        }
-        else {
-            
-            JOptionPane.showMessageDialog(this, "Invalid Path. Please enter a valid path.", "Error", JOptionPane.ERROR_MESSAGE);  
-            return;
-        }
-        temp.setGender((String) GenderBOX.getSelectedItem());
-        temp.setId(IdTXT.getText());
-        DAO.UpdateEmployee(temp);
-       // clear();
-       setVisible(false);
-       dispose();
-     
-       JOptionPane.showMessageDialog(this, "Employee updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-
-    }
-
     private void ShowData(Employee employee) {
         First_NameTXT.setText(employee.getFirst_Name());
         Last_NameTXT.setText(employee.getLast_Name());
         IdTXT.setText(employee.getId());
         PasswordTXT.setText(employee.getPassword());
         PhoneTXT.setText(employee.getPhone());
-        
-           
-                byte[] img = employee.getPhoto();
-                ImageIcon image = new ImageIcon(img);
-                Image im = image.getImage();
-                Image myimg = im.getScaledInstance(Photolbl.getWidth(), Photolbl.getHeight(), Image.SCALE_SMOOTH);
-                ImageIcon newImage = new ImageIcon(myimg);
-                Photolbl.setIcon(newImage);
-        
+
+        byte[] img = employee.getPhoto();
+        ImageIcon image = new ImageIcon(img);
+        Image im = image.getImage();
+        Image myimg = im.getScaledInstance(Photolbl.getWidth(), Photolbl.getHeight(), Image.SCALE_SMOOTH);
+        ImageIcon newImage = new ImageIcon(myimg);
+        Photolbl.setIcon(newImage);
+
     }
 
-  
 }
-
