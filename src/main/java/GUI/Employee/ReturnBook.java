@@ -160,7 +160,8 @@ public class ReturnBook extends javax.swing.JFrame {
           JOptionPane.showMessageDialog(this, "Book returned successfully with no delay ", "Success", JOptionPane.INFORMATION_MESSAGE);           
         }
         } catch (Exception ex) {
-            Logger.getLogger(ReturnBook.class.getName()).log(Level.SEVERE, null, ex);
+       JOptionPane.showMessageDialog(this, ex.getMessage(),"", JOptionPane.ERROR_MESSAGE);
+
         } 
                 
          

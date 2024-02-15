@@ -53,7 +53,7 @@ public class Book {
     }
 
     public void setAuthor(String Author) throws SQLException {
-        if (!Validation.Name(Author)) {
+        if (Author.length()==0) {
             throw new SQLException("Invalid Author. Please enter a valid Author.");
         }
 

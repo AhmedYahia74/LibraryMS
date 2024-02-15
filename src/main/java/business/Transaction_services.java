@@ -37,7 +37,6 @@ public class Transaction_services {
         ArrayList<Book> lst = BookDAO.returnBookWithIdS(Book_IdTXT);
         lst.get(0).setNo_Of_Copies(lst.get(0).getNo_Of_Copies() - 1);
         TransactionDAO.UpdateBook(lst.get(0));
-        throw new SQLException("Book borrowed successfully.", "Success");
     }
 
     static public int delete_record(String Book_IdTXT, String Customer_IdTXT, String Employee_Id) throws SQLException, IOException, Exception {

@@ -36,9 +36,11 @@ public class EmployeeDAO extends ConnectDB{
         myconnection=EmployeeDAO.getConnect();
         ArrayList<Employee> lst;
         lst = new ArrayList<>();
-        s="%"+s+"%";
-        PreparedStatement statement;
+        String[] name=s.split(" ");
+         PreparedStatement statement;
         ResultSet result;
+        if(name.length==1){
+        s="%"+s+"%";
         if(s.length()>2){
         statement = myconnection.prepareStatement("select * from Employee where First_Name like ? or Last_Name like ? or"
                 + " Employee_Id like ?");
@@ -49,12 +51,21 @@ public class EmployeeDAO extends ConnectDB{
         else {
             statement = myconnection.prepareStatement("select * from Employee");
         }
+        }
+        else {
+            name[0]="%"+name[0]+"%";
+            name[1]="%"+name[1]+"%";
+        statement = myconnection.prepareStatement("select * from Employee where First_Name like ? and Last_Name like ?");
+        statement.setString(1, name[0]);
+        statement.setString(2, name[1]);
+        }
         result=statement.executeQuery();
         while(result.next()){
             Employee temp=new Employee(result);
             lst.add(temp);
         }
         statement.close();
+        
         return lst;
         
     }

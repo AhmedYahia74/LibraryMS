@@ -24,8 +24,8 @@ public class Validation {
     }
     
    static public boolean Phone(String s){
+          if(s.length()!=11)return false;
         if(s.charAt(0)!='0' || s.charAt(1)!='1')return false;
-        if(s.length()!=11)return false;
         for(char i : s.toCharArray()){
             if(i>='0'&&i<='9')continue;
             return false;

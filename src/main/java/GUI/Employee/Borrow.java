@@ -152,6 +152,8 @@ public class Borrow extends javax.swing.JFrame {
     private void SaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveButtonActionPerformed
         try {
             Transaction_services.Borrow_a_book(Book_IdTXT.getText(),Customer_IdTXT.getText(), Employee_Id);
+           JOptionPane.showMessageDialog(this, "Book borrowed successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);           
+
         } catch (SQLException |IOException  e) { 
             // Display a message dialog with the error message
             String errorMessage = "An error occurred: " + e.getMessage();
