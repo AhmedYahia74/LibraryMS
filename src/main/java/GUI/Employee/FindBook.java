@@ -4,9 +4,9 @@
  */
 package GUI.Employee;
 
-import Database.Book;
-import business.BookTableModel;
-import Database.BookDAO;
+import Entities.Book;
+import Services.BookTableModel;
+import Entities.BookDAO;
 import GUI.Employee.EmployeeMain;
 import java.io.IOException;
 import java.sql.*;

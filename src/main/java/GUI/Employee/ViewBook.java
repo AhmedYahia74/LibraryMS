@@ -4,10 +4,10 @@
  */
 package GUI.Employee;
 
-import Database.Book;
-import Database.BookDAO;
-import business.Validation;
-import business.Book_services;
+import Entities.Book;
+import Entities.BookDAO;
+import Services.Validation;
+import Services.Book_services;
 import java.awt.Image;
 import java.io.File;
 import java.io.FileInputStream;

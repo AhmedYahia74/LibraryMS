@@ -3,10 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package GUI.Employee;
-import business.Validation;
-import Database.CustomerDAO;
-import Database.Customer;
-import business.Customer_services;
+import Services.Validation;
+import Entities.CustomerDAO;
+import Entities.Customer;
+import Services.Customer_services;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

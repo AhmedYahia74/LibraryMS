@@ -8,9 +8,9 @@ package GUI.Employee;
  *
  * @author Ahmed yehia
  */
-import business.Validation;
-import Database.Customer;
-import business.Customer_services;
+import Services.Validation;
+import Entities.Customer;
+import Services.Customer_services;
 import java.awt.Image;
 import java.io.IOException;
 import java.sql.SQLException;

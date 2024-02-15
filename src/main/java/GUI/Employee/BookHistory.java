@@ -4,10 +4,10 @@
  */
 package GUI.Employee;
 
-import Database.Book;
-import Database.TransactionDAO;
-import Database.Transaction;
-import business.TransactionTableModel;
+import Entities.Book;
+import Entities.TransactionDAO;
+import Entities.Transaction;
+import Services.TransactionTableModel;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;

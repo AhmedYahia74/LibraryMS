@@ -1,6 +1,6 @@
 package GUI.admin;
 
-import business.Employee_services;
+import Services.Employee_services;
 
 import java.io.IOException;
 import java.sql.SQLException;

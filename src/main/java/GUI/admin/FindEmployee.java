@@ -1,8 +1,8 @@
 package GUI.admin;
 
-import Database.EmployeeDAO;
-import Database.Employee;
-import business.EmployeeTableModel;
+import Entities.EmployeeDAO;
+import Entities.Employee;
+import Services.EmployeeTableModel;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;

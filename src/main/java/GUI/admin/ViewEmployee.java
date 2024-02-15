@@ -5,8 +5,8 @@
 package GUI.admin;
 
 
-import Database.Employee;
-import business.Employee_services;
+import Entities.Employee;
+import Services.Employee_services;
 import java.awt.Image;
 import java.io.IOException;
 import java.sql.SQLException;

@@ -4,11 +4,11 @@
  */
 package GUI.Employee;
 
-import Database.Book;
+import Entities.Book;
 import GUI.Employee.EmployeeMain;
-import Database.TransactionDAO;
-import business.Transaction_services;
-import business.Validation;
+import Entities.TransactionDAO;
+import Services.Transaction_services;
+import Services.Validation;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;

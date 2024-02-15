@@ -4,9 +4,9 @@
  */
 package GUI.Employee;
 
-import Database.Customer;
-import Database.CustomerDAO;
-import business.CustomerTableModel;
+import Entities.Customer;
+import Entities.CustomerDAO;
+import Services.CustomerTableModel;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;

@@ -4,7 +4,7 @@
  */
 package GUI.Employee;
 
-import Database.EmployeeDAO;
+import Entities.EmployeeDAO;
 import GUI.Main;
 import java.io.IOException;
 import java.sql.SQLException;
